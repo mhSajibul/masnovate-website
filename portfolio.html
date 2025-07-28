@@ -1,0 +1,715 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+    <title>Masnovate | Portfolio</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#e11d48', // Vibrant red
+                        secondary: '#1e293b', // Deep blue-gray
+                        accent: '#8b5cf6'   // Purple
+                    },
+                    backgroundImage: {
+                        'hero-gradient': 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)',
+                        'text-gradient': 'linear-gradient(90deg, #e11d48 0%, #8b5cf6 100%)'
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'morph': 'morph 8s ease-in-out infinite',
+                        'reveal': 'reveal 0.8s ease-out forwards',
+                        'pulse-glow': 'pulse-glow 2s infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                        morph: {
+                            '0%, 100%': { borderRadius: '60% 40% 30% 70%/60% 30% 70% 40%' },
+                            '50%': { borderRadius: '30% 60% 70% 40%/50% 60% 30% 60%' }
+                        },
+                        reveal: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        'pulse-glow': {
+                            '0%': { boxShadow: '0 0 0 0 rgba(225, 29, 72, 0.5)' },
+                            '70%': { boxShadow: '0 0 0 10px rgba(225, 29, 72, 0)' },
+                            '100%': { boxShadow: '0 0 0 0 rgba(225, 29, 72, 0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        
+        
+        
+        .portfolio-filter button.active {
+            background: linear-gradient(90deg, #e11d48 0%, #8b5cf6 100%);
+            color: white;
+        }
+        .portfolio-item {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+        }
+        .portfolio-overlay {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+        .floating-shape {
+            position: absolute;
+            animation: float 8s ease-in-out infinite;
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+        .reveal {
+            opacity: 0;
+            animation-delay: calc(var(--i) * 0.1s);
+        }
+        @keyframes reveal {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-white font-sans">
+    
+<nav class="bg-white shadow-lg fixed w-full z-50 top-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center">
+                <a href="index.html" class="text-2xl font-bold text-primary"><img src="assets/images/masnovate.png" class="w-28 md:w-36 lg:w-48" alt="Masnovate"></a>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="text-gray-700 hover:text-primary transition-colors">Home</a>
+                <a href="about.html" class="text-gray-700 hover:text-primary transition-colors">About</a>
+                <a href="services.html" class="text-gray-700 hover:text-primary transition-colors">Services</a>
+                <a href="pricing.html" class="text-gray-700 hover:text-primary transition-colors">Pricing</a>
+                <a href="portfolio.html" class="text-gray-700 hover:text-primary transition-colors">Portfolio</a>
+                <a href="contact.html" class="text-gray-700 hover:text-primary transition-colors">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:text-primary">Home</a>
+                <a href="about.html" class="block px-3 py-2 text-gray-700 hover:text-primary">About</a>
+                <a href="services.html" class="block px-3 py-2 text-gray-700 hover:text-primary">Services</a>
+                <a href="pricing.html" class="block px-3 py-2 text-gray-700 hover:text-primary">Pricing</a>
+                <a href="portfolio.html" class="block px-3 py-2 text-gray-700 hover:text-primary">Portfolio</a>
+                <a href="contact.html" class="block px-3 py-2 text-gray-700 hover:text-primary">Contact</a>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- After your nav element -->
+<div id="mobile-menu-backdrop" class="mobile-menu-backdrop"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        let menuOpen = false;
+        
+        // Hamburger icon SVG
+        const hamburgerIcon = `
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        `;
+        
+        // Close icon SVG
+        const closeIcon = `
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        `;
+        
+        mobileMenuButton.innerHTML = hamburgerIcon;
+        
+        mobileMenuButton.addEventListener('click', function() {
+            menuOpen = !menuOpen;
+            
+            // Toggle menu classes
+            if (menuOpen) {
+                mobileMenu.classList.remove('hidden');
+                // Force reflow to enable transition
+                void mobileMenu.offsetHeight;
+                mobileMenu.classList.add('menu-open');
+                mobileMenuButton.innerHTML = closeIcon;
+            } else {
+                mobileMenu.classList.remove('menu-open');
+                // Wait for transition to complete before hiding
+                mobileMenu.addEventListener('transitionend', function handler() {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.removeEventListener('transitionend', handler);
+                });
+                mobileMenuButton.innerHTML = hamburgerIcon;
+            }
+            
+            // Update aria attributes for accessibility
+            mobileMenuButton.setAttribute('aria-expanded', menuOpen);
+        });
+        
+        // Close menu when clicking on links (optional)
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (menuOpen) {
+                    mobileMenu.classList.remove('menu-open');
+                    mobileMenu.addEventListener('transitionend', function handler() {
+                        mobileMenu.classList.add('hidden');
+                        mobileMenu.removeEventListener('transitionend', handler);
+                    });
+                    mobileMenuButton.innerHTML = hamburgerIcon;
+                    menuOpen = false;
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+    });
+</script>
+    <!-- Portfolio Hero Section -->
+    <section class="hero-gradient text-white py-16 md:py-24 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-20 left-10 w-20 h-20 bg-white rounded-full morph-shape"></div>
+            <div class="absolute top-40 right-20 w-32 h-32 bg-red-500 rounded-full float-animation"></div>
+            <div class="absolute bottom-20 left-1/4 w-16 h-16 bg-blue-400 rounded-full float-animation" style="animation-delay: -2s;"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center">
+                <div class="reveal">
+                    <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                        Our Creative Portfolio
+                        <span class="block text-gradient">European Excellence</span>
+                    </h1>
+                </div>
+                <div class="reveal" style="animation-delay: 0.2s;">
+                    <p class="text-lg sm:text-xl md:text-2xl mb-8 max-w-4xl mx-auto text-gray-200">
+                        Discover how we transform ideas into complete digital experiences. From UI/UX design to full-stack development, each project reflects our commitment to quality and innovation.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Showcase -->
+    <section class="py-16 md:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="reveal">
+                    <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold text-secondary mb-6">
+                        Complete Web Solutions
+                        <span class="block text-gradient">Showcased</span>
+                    </h2>
+                </div>
+                <div class="reveal" style="animation-delay: 0.2s;">
+                    <p class="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+                        Each project represents our full package approach - combining stunning UI/UX, memorable branding, and robust development.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Portfolio Filter -->
+            <div class="portfolio-filter mb-12 flex flex-wrap justify-center gap-2">
+                <button class="reveal px-6 py-2 rounded-full border border-gray-300 hover:bg-gray-50 transition-all text-gray-700" style="--i:0.1;">All Projects</button>
+                <button class="reveal px-6 py-2 rounded-full border border-gray-300 hover:bg-gray-50 transition-all text-gray-700 active" style="--i:0.2;">UI/UX Design</button>
+                <button class="reveal px-6 py-2 rounded-full border border-gray-300 hover:bg-gray-50 transition-all text-gray-700" style="--i:0.3;">Web Development</button>
+                <button class="reveal px-6 py-2 rounded-full border border-gray-300 hover:bg-gray-50 transition-all text-gray-700" style="--i:0.4;">Brand Identity</button>
+                <button class="reveal px-6 py-2 rounded-full border border-gray-300 hover:bg-gray-50 transition-all text-gray-700" style="--i:0.5;">E-commerce</button>
+            </div>
+
+            <!-- Portfolio Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                <!-- Portfolio Item 1 -->
+                <div class="reveal portfolio-item rounded-3xl overflow-hidden shadow-lg relative" style="--i:0.1;">
+                    <div class="h-80 bg-gradient-to-tr from-blue-100 to-purple-100 relative">
+                        <!-- Floating mockups -->
+                        <div class="absolute top-8 left-8 w-4/5 h-48 bg-white rounded-xl shadow-2xl transform rotate-3"></div>
+                        <div class="absolute top-16 left-16 w-4/5 h-48 bg-white rounded-xl shadow-2xl transform -rotate-2"></div>
+                        <div class="absolute top-24 left-24 w-4/5 h-48 bg-white rounded-xl shadow-2xl transform rotate-1"></div>
+                        
+                        <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-secondary/90 to-transparent flex flex-col justify-end p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">Luxury Travel Platform</h3>
+                            <p class="text-gray-200 mb-4">Complete UI/UX redesign and web development for a luxury travel agency</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full text-xs bg-primary/20 text-primary">UI/UX Design</span>
+                                <span class="px-3 py-1 rounded-full text-xs bg-accent/20 text-accent">Web Development</span>
+                                <span class="px-3 py-1 rounded-full text-xs bg-purple-500/20 text-purple-500">Branding</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Luxury Travel Platform</h3>
+                        <p class="text-gray-600">Complete redesign and development for European luxury travel agency</p>
+                    </div>
+                </div>
+
+                <!-- Portfolio Item 2 -->
+                <div class="reveal portfolio-item rounded-3xl overflow-hidden shadow-lg relative" style="--i:0.2;">
+                    <div class="h-80 bg-gradient-to-tr from-amber-100 to-orange-100 relative">
+                        <!-- Branding showcase -->
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <div class="w-32 h-32 rounded-full bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center text-white text-xl font-bold">
+                                NV
+                            </div>
+                            <div class="absolute -top-4 -right-4 w-16 h-16 rounded-xl bg-blue-500 flex items-center justify-center text-white font-bold text-xs">
+                                Tech
+                            </div>
+                            <div class="absolute -bottom-4 -left-4 w-16 h-16 rounded-xl bg-green-500 flex items-center justify-center text-white font-bold text-xs">
+                                Labs
+                            </div>
+                        </div>
+                        
+                        <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-secondary/90 to-transparent flex flex-col justify-end p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">NovaTech Brand Identity</h3>
+                            <p class="text-gray-200 mb-4">Complete branding package including logo, style guide, and marketing materials</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full text-xs bg-pink-500/20 text-pink-500">Logo Design</span>
+                                <span class="px-3 py-1 rounded-full text-xs bg-amber-500/20 text-amber-500">Brand Identity</span>
+                                <span class="px-3 py-1 rounded-full text-xs bg-green-500/20 text-green-500">Marketing</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">NovaTech Brand Identity</h3>
+                        <p class="text-gray-600">Complete branding package for tech startup</p>
+                    </div>
+                </div>
+
+                <!-- Portfolio Item 3 -->
+                <div class="reveal portfolio-item rounded-3xl overflow-hidden shadow-lg relative" style="--i:0.3;">
+                    <div class="h-80 bg-gradient-to-tr from-green-100 to-emerald-100 relative">
+                        <!-- E-commerce showcase -->
+                        <div class="absolute top-10 left-10 w-16 h-16 rounded-lg bg-white shadow-lg"></div>
+                        <div class="absolute top-10 right-10 w-24 h-24 rounded-lg bg-white shadow-lg"></div>
+                        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 w-40 h-40 rounded-xl bg-white shadow-xl flex items-center justify-center">
+                            <div class="w-32 h-32 rounded-lg bg-gradient-to-r from-green-400 to-emerald-600"></div>
+                        </div>
+                        
+                        <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-secondary/90 to-transparent flex flex-col justify-end p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">EcoStore E-commerce</h3>
+                            <p class="text-gray-200 mb-4">Full e-commerce solution with custom UI and seamless checkout experience</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full text-xs bg-blue-500/20 text-blue-500">UI Design</span>
+                                <span class="px-3 py-1 rounded-full text-xs bg-emerald-500/20 text-emerald-500">E-commerce</span>
+                                <span class="px-3 py-1 rounded-full text-xs bg-red-500/20 text-red-500">Development</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">EcoStore E-commerce</h3>
+                        <p class="text-gray-600">Sustainable product marketplace with custom UI</p>
+                    </div>
+                </div>
+
+                <!-- Portfolio Item 4 -->
+                <div class="reveal portfolio-item rounded-3xl overflow-hidden shadow-lg relative" style="--i:0.4;">
+                    <div class="h-80 bg-gradient-to-tr from-purple-100 to-pink-100 relative">
+                        <!-- Dashboard showcase -->
+                        <div class="absolute top-8 left-8 w-10 h-10 rounded-lg bg-white shadow"></div>
+                        <div class="absolute top-8 right-8 w-20 h-10 rounded-lg bg-white shadow"></div>
+                        <div class="absolute top-24 left-1/2 transform -translate-x-1/2 w-4/5 h-40 rounded-xl bg-white shadow-xl">
+                            <div class="h-4 bg-gray-200 rounded mt-4 mx-4"></div>
+                            <div class="h-4 bg-gray-200 rounded mt-2 mx-4 w-3/4"></div>
+                            <div class="flex mt-6 mx-4 gap-2">
+                                <div class="w-1/3 h-24 bg-gradient-to-r from-purple-400 to-pink-500 rounded-lg"></div>
+                                <div class="w-1/3 h-24 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-lg"></div>
+                                <div class="w-1/3 h-24 bg-gradient-to-r from-green-400 to-emerald-500 rounded-lg"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-secondary/90 to-transparent flex flex-col justify-end p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">Analytics Dashboard</h3>
+                            <p class="text-gray-200 mb-4">Custom data visualization dashboard for financial analytics platform</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full text-xs bg-purple-500/20 text-purple-500">UI/UX Design</span>
+                                <span class="px-3 py-1 rounded-full text-xs bg-cyan-500/20 text-cyan-500">Data Viz</span>
+                                <span class="px-3 py-1 rounded-full text-xs bg-pink-500/20 text-pink-500">Development</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Analytics Dashboard</h3>
+                        <p class="text-gray-600">Data visualization platform for financial services</p>
+                    </div>
+                </div>
+
+                <!-- Portfolio Item 5 -->
+                <div class="reveal portfolio-item rounded-3xl overflow-hidden shadow-lg relative" style="--i:0.5;">
+                    <div class="h-80 bg-gradient-to-tr from-cyan-100 to-blue-100 relative">
+                        <!-- Mobile app showcase -->
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <div class="w-32 h-56 rounded-[2rem] bg-gray-900 shadow-2xl">
+                                <div class="h-8 rounded-t-[2rem] bg-gray-800 flex justify-center pt-2">
+                                    <div class="w-16 h-1 rounded bg-gray-700"></div>
+                                </div>
+                                <div class="p-4">
+                                    <div class="h-4 bg-gray-700 rounded mb-2"></div>
+                                    <div class="h-4 bg-gray-700 rounded mb-4 w-3/4"></div>
+                                    <div class="h-32 rounded-lg bg-gradient-to-b from-cyan-500 to-blue-600"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-secondary/90 to-transparent flex flex-col justify-end p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">HealthTrack Mobile App</h3>
+                            <p class="text-gray-200 mb-4">Fitness tracking app with beautiful UI and intuitive UX</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full text-xs bg-blue-500/20 text-blue-500">Mobile UI</span>
+                                <span class="px-3 py-1 rounded-full text-xs bg-cyan-500/20 text-cyan-500">UX Design</span>
+                                <span class="px-3 py-1 rounded-full text-xs bg-green-500/20 text-green-500">Development</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">HealthTrack Mobile App</h3>
+                        <p class="text-gray-600">Fitness and wellness tracking application</p>
+                    </div>
+                </div>
+
+                <!-- Portfolio Item 6 -->
+                <div class="reveal portfolio-item rounded-3xl overflow-hidden shadow-lg relative" style="--i:0.6;">
+                    <div class="h-80 bg-gradient-to-tr from-red-100 to-orange-100 relative">
+                        <!-- Restaurant showcase -->
+                        <div class="absolute top-10 left-10 w-16 h-16 rounded-full bg-gradient-to-r from-amber-400 to-orange-500"></div>
+                        <div class="absolute top-10 right-10 w-24 h-24 rounded-full bg-gradient-to-r from-red-400 to-pink-500"></div>
+                        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 w-32 h-32 rounded-2xl bg-white shadow-xl flex items-center justify-center">
+                            <div class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-red-500">M</div>
+                        </div>
+                        
+                        <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-secondary/90 to-transparent flex flex-col justify-end p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">Mediterráneo Restaurant</h3>
+                            <p class="text-gray-200 mb-4">Complete branding and website for authentic Mediterranean restaurant</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full text-xs bg-amber-500/20 text-amber-500">Branding</span>
+                                <span class="px-3 py-1 rounded-full text-xs bg-red-500/20 text-red-500">Web Design</span>
+                                <span class="px-3 py-1 rounded-full text-xs bg-orange-500/20 text-orange-500">Print Design</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Mediterráneo Restaurant</h3>
+                        <p class="text-gray-600">Complete branding and website for restaurant chain</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="text-center mt-16">
+                <button class="reveal px-8 py-4 rounded-full bg-white border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-primary hover:text-primary font-semibold transition-all duration-300" style="--i:0.7;">
+                    View More Projects
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Highlights -->
+    <section class="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="reveal">
+                    <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold text-secondary mb-6">
+                        Our Complete
+                        <span class="text-gradient">Service Package</span>
+                    </h2>
+                </div>
+                <div class="reveal" style="animation-delay: 0.2s;">
+                    <p class="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+                        Everything your digital presence needs to thrive in the European market, delivered as one seamless package.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="reveal bg-white rounded-3xl p-8 shadow-xl border border-gray-100 hover:border-primary/30 transition-all" style="--i:0.1;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">UI/UX Design</h3>
+                    <p class="text-gray-600 mb-4">User-centered interfaces that convert visitors into customers with intuitive experiences.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-red-500 rounded-full mr-3"></span> Wireframing & Prototyping</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-red-500 rounded-full mr-3"></span> Responsive Design Systems</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-red-500 rounded-full mr-3"></span> Usability Testing</li>
+                    </ul>
+                </div>
+
+                <div class="reveal bg-white rounded-3xl p-8 shadow-xl border border-gray-100 hover:border-primary/30 transition-all" style="--i:0.2;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-600 flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Development</h3>
+                    <p class="text-gray-600 mb-4">Modern, fast, and interactive experiences built with cutting-edge technologies.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span> Frontend Development</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span> Backend Development</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-3"></span> E-commerce Solutions</li>
+                    </ul>
+                </div>
+
+                <div class="reveal bg-white rounded-3xl p-8 shadow-xl border border-gray-100 hover:border-primary/30 transition-all" style="--i:0.3;">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-r from-purple-500 to-indigo-600 flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Branding & Graphics</h3>
+                    <p class="text-gray-600 mb-4">Complete visual identity that makes your brand memorable in the digital landscape.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-3"></span> Logo & Brand Identity</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-3"></span> Marketing Graphics</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-3"></span> Social Media Assets</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 md:py-24 bg-gradient-to-br from-gray-900 to-secondary text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5">
+            <div class="floating-shape w-40 h-40 bg-red-500 top-10 left-10"></div>
+            <div class="floating-shape w-60 h-60 bg-blue-500 bottom-10 right-10" style="animation-delay: -4s;"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <div class="reveal">
+                    <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold mb-6">
+                        Client Success
+                        <span class="block text-gradient">Stories</span>
+                    </h2>
+                </div>
+                <div class="reveal" style="animation-delay: 0.2s;">
+                    <p class="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto">
+                        Hear from European businesses that have transformed their digital presence with our complete solutions.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="reveal glass-effect rounded-3xl p-8" style="--i:0.1;">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center text-white text-xl font-bold mr-4">JD</div>
+                        <div>
+                            <h3 class="text-xl font-bold">João Dias</h3>
+                            <p class="text-gray-300">CEO, Luxury Travel Group</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-200 mb-6">"Masnovate delivered a complete solution that exceeded our expectations. The UI design captured our luxury brand perfectly, and the development team implemented complex booking functionality flawlessly. Their attention to detail is exceptional."</p>
+                    <div class="flex">
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="reveal glass-effect rounded-3xl p-8" style="--i:0.2;">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-cyan-600 flex items-center justify-center text-white text-xl font-bold mr-4">SP</div>
+                        <div>
+                            <h3 class="text-xl font-bold">Sophie Petit</h3>
+                            <p class="text-gray-300">Marketing Director, EcoStore</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-200 mb-6">"The complete package from Masnovate transformed our online presence. Their branding work established us as leaders in sustainable products, and the e-commerce platform they built has increased our conversion rate by 40%. Truly a full-service solution!"</p>
+                    <div class="flex">
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                        <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 md:py-24 service-gradient text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-20 left-10 w-20 h-20 bg-white rounded-full morph-shape"></div>
+            <div class="absolute top-40 right-20 w-32 h-32 bg-red-500 rounded-full float-animation"></div>
+            <div class="absolute bottom-20 left-1/4 w-16 h-16 bg-blue-400 rounded-full float-animation" style="animation-delay: -2s;"></div>
+        </div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div class="reveal">
+                <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold mb-6">
+                    Ready to Transform Your
+                    <span class="block text-gradient">Digital Presence?</span>
+                </h2>
+            </div>
+            <div class="reveal" style="animation-delay: 0.2s;">
+                <p class="text-lg sm:text-xl mb-8 text-gray-100 max-w-3xl mx-auto">
+                    Let's create something amazing together. Get started with a free consultation and see how we can elevate your business with European quality standards.
+                </p>
+            </div>
+            <div class="reveal flex flex-col sm:flex-row gap-4 justify-center items-center" style="animation-delay: 0.4s;">
+                <button class="w-full sm:w-auto bg-white text-primary hover:bg-gray-100 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl">
+                    Start Your Project
+                </button>
+                <button class="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300">
+                    View Our Services
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize animations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add active class to reveal elements when they enter the viewport
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'reveal 0.8s ease-out forwards';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            // Observe all reveal elements
+            document.querySelectorAll('.reveal').forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Portfolio filter functionality
+            const filterButtons = document.querySelectorAll('.portfolio-filter button');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                });
+            });
+            
+            // Portfolio item hover effect
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
+            portfolioItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.25)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '';
+                });
+            });
+        });
+    </script>
+<!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl text-primary font-bold mb-4">Masnovate</h3>
+                    <p class="text-gray-400 mb-4">
+                        Portuguese innovation meets European excellence in web development and design.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors duration-300">UI/UX Design</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-300">Frontend Development</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-300">Backend Development</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-300">Graphics Design</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-300">Brand Identity</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="about.html" class="hover:text-white transition-colors duration-300">About Us</a></li>
+                        <li><a href="portfolio.html" class="hover:text-white transition-colors duration-300">Portfolio</a></li>
+                        <li><a href="service.html" class="hover:text-white transition-colors duration-300">Services</a></li>
+                        <li><a href="pricing.html" class="hover:text-white transition-colors duration-300">Pricing</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition-colors duration-300">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Lisbon, Portugal</li>
+                        <li>masnovate@gmail.com</li>
+                        <li>+351 123 456 789</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Masnovate. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
