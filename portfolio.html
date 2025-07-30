@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,10 +51,7 @@
             }
         }
     </script>
-    <style>
-        
-        
-        
+   <style>
         .portfolio-filter button.active {
             background: linear-gradient(90deg, #e11d48 0%, #8b5cf6 100%);
             color: white;
@@ -95,106 +93,51 @@
 </head>
 <body class="bg-white font-sans">
     
-<nav class="bg-white shadow-lg fixed w-full z-50 top-0">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-            <div class="flex items-center">
-                <a href="index.html" class="text-2xl font-bold text-primary"><img src="assets/images/masnovate.png" class="w-28 md:w-36 lg:w-48" alt="Masnovate"></a>
-            </div>
-            <div class="hidden md:flex space-x-8">
-                <a href="index.html" class="text-gray-700 hover:text-primary transition-colors">Home</a>
-                <a href="about.html" class="text-gray-700 hover:text-primary transition-colors">About</a>
-                <a href="services.html" class="text-gray-700 hover:text-primary transition-colors">Services</a>
-                <a href="pricing.html" class="text-gray-700 hover:text-primary transition-colors">Pricing</a>
-                <a href="portfolio.html" class="text-gray-700 hover:text-primary transition-colors">Portfolio</a>
-                <a href="contact.html" class="text-gray-700 hover:text-primary transition-colors">Contact</a>
-            </div>
-            <button id="mobile-menu-button" class="md:hidden">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-        <!-- Mobile menu -->
-        <div id="mobile-menu" class="hidden md:hidden">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="index.html" class="block px-3 py-2 text-gray-700 hover:text-primary">Home</a>
-                <a href="about.html" class="block px-3 py-2 text-gray-700 hover:text-primary">About</a>
-                <a href="services.html" class="block px-3 py-2 text-gray-700 hover:text-primary">Services</a>
-                <a href="pricing.html" class="block px-3 py-2 text-gray-700 hover:text-primary">Pricing</a>
-                <a href="portfolio.html" class="block px-3 py-2 text-gray-700 hover:text-primary">Portfolio</a>
-                <a href="contact.html" class="block px-3 py-2 text-gray-700 hover:text-primary">Contact</a>
-            </div>
-        </div>
-    </div>
-</nav>
-<!-- After your nav element -->
-<div id="mobile-menu-backdrop" class="mobile-menu-backdrop"></div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        let menuOpen = false;
-        
-        // Hamburger icon SVG
-        const hamburgerIcon = `
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-        `;
-        
-        // Close icon SVG
-        const closeIcon = `
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-        `;
-        
-        mobileMenuButton.innerHTML = hamburgerIcon;
-        
-        mobileMenuButton.addEventListener('click', function() {
-            menuOpen = !menuOpen;
-            
-            // Toggle menu classes
-            if (menuOpen) {
-                mobileMenu.classList.remove('hidden');
-                // Force reflow to enable transition
-                void mobileMenu.offsetHeight;
-                mobileMenu.classList.add('menu-open');
-                mobileMenuButton.innerHTML = closeIcon;
-            } else {
-                mobileMenu.classList.remove('menu-open');
-                // Wait for transition to complete before hiding
-                mobileMenu.addEventListener('transitionend', function handler() {
-                    mobileMenu.classList.add('hidden');
-                    mobileMenu.removeEventListener('transitionend', handler);
-                });
-                mobileMenuButton.innerHTML = hamburgerIcon;
-            }
-            
-            // Update aria attributes for accessibility
-            mobileMenuButton.setAttribute('aria-expanded', menuOpen);
-        });
-        
-        // Close menu when clicking on links (optional)
-        const mobileLinks = mobileMenu.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                if (menuOpen) {
-                    mobileMenu.classList.remove('menu-open');
-                    mobileMenu.addEventListener('transitionend', function handler() {
-                        mobileMenu.classList.add('hidden');
-                        mobileMenu.removeEventListener('transitionend', handler);
-                    });
-                    mobileMenuButton.innerHTML = hamburgerIcon;
-                    menuOpen = false;
-                    mobileMenuButton.setAttribute('aria-expanded', 'false');
-                }
-            });
-        });
-    });
-</script>
+    <nav class="bg-white shadow-lg fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html">
+                        <div class="w-28 md:w-36 lg:w-48 flex items-center justify-center">
+                            <div class="w-28 md:w-36 lg:w-48 flex items-center justify-center">
+                                <img src="assets/images/masnovate.png" class="w-28 md:w-36 lg:w-48" alt="Masnovate">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-8 nav-desktop">
+                    <a href="index.html" class="text-gray-700 hover:text-primary transition-colors nav-link" data-page="home">Home</a>
+                    <a href="about.html" class="text-gray-700 hover:text-primary transition-colors nav-link" data-page="about">About</a>
+                    <a href="services.html" class="text-gray-700 hover:text-primary transition-colors nav-link" data-page="services">Services</a>
+                    <a href="pricing.html" class="text-gray-700 hover:text-primary transition-colors nav-link" data-page="pricing">Pricing</a>
+                    <a href="portfolio.html" class="text-gray-700 hover:text-primary transition-colors nav-link" data-page="portfolio">Portfolio</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-primary transition-colors nav-link" data-page="contact">Contact</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="hidden md:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 nav-mobile">
+                    <a href="index.html" class="block px-3 py-2 text-gray-700 hover:text-primary nav-link" data-page="home">Home</a>
+                    <a href="about.html" class="block px-3 py-2 text-gray-700 hover:text-primary nav-link" data-page="about">About</a>
+                    <a href="services.html" class="block px-3 py-2 text-gray-700 hover:text-primary nav-link" data-page="services">Services</a>
+                    <a href="pricing.html" class="block px-3 py-2 text-gray-700 hover:text-primary nav-link" data-page="pricing">Pricing</a>
+                    <a href="portfolio.html" class="block px-3 py-2 text-gray-700 hover:text-primary nav-link" data-page="portfolio">Portfolio</a>
+                    <a href="contact.html" class="block px-3 py-2 text-gray-700 hover:text-primary nav-link" data-page="contact">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- After your nav element -->
+    <div id="mobile-menu-backdrop" class="mobile-menu-backdrop"></div>
+
+   
     <!-- Portfolio Hero Section -->
     <section class="hero-gradient text-white py-16 md:py-24 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10">
@@ -638,6 +581,7 @@
                 });
             });
             
+            
             // Portfolio item hover effect
             const portfolioItems = document.querySelectorAll('.portfolio-item');
             portfolioItems.forEach(item => {
@@ -651,7 +595,7 @@
             });
         });
     </script>
-<!-- Footer -->
+ <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -688,11 +632,11 @@
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Company</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="about.html" class="hover:text-white transition-colors duration-300">About Us</a></li>
-                        <li><a href="portfolio.html" class="hover:text-white transition-colors duration-300">Portfolio</a></li>
-                        <li><a href="service.html" class="hover:text-white transition-colors duration-300">Services</a></li>
-                        <li><a href="pricing.html" class="hover:text-white transition-colors duration-300">Pricing</a></li>
-                        <li><a href="contact.html" class="hover:text-white transition-colors duration-300">Contact</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-300">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-300">Portfolio</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-300">Pricing</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-300">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-300">Contact</a></li>
                     </ul>
                 </div>
                 
@@ -711,5 +655,141 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');
+        const navLinks = document.querySelectorAll('.nav-link');
+        let menuOpen = false;
+        
+        // Get current page from URL
+        const currentPath = window.location.pathname;
+        const currentPage = getCurrentPageFromPath(currentPath);
+        
+        // Hamburger icon SVG
+        const hamburgerIcon = `
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        `;
+        
+        // Close icon SVG
+        const closeIcon = `
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        `;
+        
+        // Initialize menu button
+        mobileMenuButton.innerHTML = hamburgerIcon;
+        
+        // Set initial active state based on current page
+        setActiveMenu(currentPage);
+        
+        // Mobile menu toggle functionality
+        mobileMenuButton.addEventListener('click', function() {
+            toggleMobileMenu();
+        });
+        
+        // Close mobile menu when clicking backdrop
+        mobileMenuBackdrop.addEventListener('click', function() {
+            if (menuOpen) {
+                toggleMobileMenu();
+            }
+        });
+        
+        // Mobile menu link clicks - just close the menu, let default navigation happen
+        const mobileLinks = document.querySelectorAll('.nav-mobile .nav-link');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (menuOpen) {
+                    toggleMobileMenu();
+                }
+                // Don't prevent default - let the normal PHP navigation happen
+            });
+        });
+        
+        // Functions
+        function getCurrentPageFromPath(path) {
+            // Extract page name from PHP file path
+            if (path.includes('index.html') || path === '/' || path === '') {
+                return 'home';
+            } else if (path.includes('about.html')) {
+                return 'about';
+            } else if (path.includes('services.html')) {
+                return 'services';
+            } else if (path.includes('pricing.html')) {
+                return 'pricing';
+            } else if (path.includes('portfolio.html')) {
+                return 'portfolio';
+            } else if (path.includes('contact.html')) {
+                return 'contact';
+            }
+            return 'home'; // Default fallback
+        }
+        
+        function toggleMobileMenu() {
+            menuOpen = !menuOpen;
+            
+            if (menuOpen) {
+                // Open menu
+                mobileMenu.classList.remove('hidden');
+                mobileMenuBackdrop.classList.add('active');
+                // Force reflow to enable transition
+                void mobileMenu.offsetHeight;
+                mobileMenu.classList.add('menu-open');
+                mobileMenuButton.innerHTML = closeIcon;
+                document.body.style.overflow = 'hidden'; // Prevent scroll
+            } else {
+                // Close menu
+                mobileMenu.classList.remove('menu-open');
+                mobileMenuBackdrop.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scroll
+                
+                // Wait for transition to complete before hiding
+                mobileMenu.addEventListener('transitionend', function handler() {
+                    if (!menuOpen) { // Double check menu is still closed
+                        mobileMenu.classList.add('hidden');
+                    }
+                    mobileMenu.removeEventListener('transitionend', handler);
+                });
+                mobileMenuButton.innerHTML = hamburgerIcon;
+            }
+            
+            // Update aria attributes for accessibility
+            mobileMenuButton.setAttribute('aria-expanded', menuOpen);
+        }
+        
+        function setActiveMenu(activePage) {
+            // Remove active class from all nav links
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Add active class to current page links (both desktop and mobile)
+            navLinks.forEach(link => {
+                if (link.getAttribute('data-page') === activePage) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Optional: Add click effect for desktop links (visual feedback before navigation)
+        const desktopLinks = document.querySelectorAll('.nav-desktop .nav-link');
+        desktopLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                // Add a temporary class for immediate visual feedback
+                this.classList.add('active');
+                // The page will navigate, so no need to remove it
+            });
+        });
+    });
+    </script>
+
+    
 </body>
 </html>
+
+   
